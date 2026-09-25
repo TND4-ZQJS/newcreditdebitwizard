@@ -128,41 +128,28 @@
   @media (max-width:900px){ .header-grid{grid-template-columns:1fr} .onetime-charge-options{grid-column: 1 / -1;} }
   @media (max-width:720px){ .policy-grid{grid-template-columns:1fr} .card-digit{width:60px} }
 
-  /* ---------------- WIZARD UI ---------------- */
-  .wizard-top{
-    display:flex;flex-direction:column;gap:12px;margin-bottom:10px;
-  }
-  .progress{
-    display:flex;align-items:center;gap:12px;justify-content:space-between;
-  }
-  .steps{
-    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
-  }
-  .step{
-    display:flex;flex-direction:column;align-items:center;gap:6px;
-    min-width:80px;text-align:center;
-  }
-  .step .bubble{
-    width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    background:var(--step-inactive);color:#fff;font-weight:700;box-shadow:0 6px 18px rgba(7,50,100,0.06);
-    transition:transform .24s, background .24s;
-  }
-  .step.active .bubble{ background: linear-gradient(135deg,var(--step-active), #4aa5ff); transform:scale(1.06); }
-  .step .label{ font-size:0.80rem; color:var(--step-text); max-width:120px; }
-  .progress-bar{
-    height:6px;background:var(--step-inactive);border-radius:6px;flex:1;position:relative;overflow:hidden;margin-left:10px;margin-right:10px;
-  }
-  .progress-bar .fill{
-    position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,var(--step-active), #4aa5ff);transition:width .32s ease-in-out;
-  }
-  .wizard-step{ display:none; opacity:0; transform:translateY(8px); transition: opacity .28s ease, transform .28s ease; }
-  .wizard-step.active{ display:block; opacity:1; transform:translateY(0); }
+  /* ---------- WIZARD CSS ---------- */ 
+  /* Progress Tracker Container */
+.step-indicator {display: flex;justify-content: space-between;margin-bottom: 30px;background: #fff;padding: 15px;border-radius: 12px;border: 1px solid var(--line);overflow-x: auto;gap: 10px;}
 
-  .wizard-nav{
-    display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:12px;
-  }
-  .wizard-nav .left, .wizard-nav .right{ display:flex; gap:10px; align-items:center; }
-  .wizard-nav button{ min-width:90px; }
+ /* Individual Step Tab */
+.step {flex: 1;text-align: center;font-size: 0.8rem;color: #888;cursor: pointer;transition: all 0.2s ease-in-out;padding: 8px;border-radius: 8px;min-width: 90px;display: flex;flex-direction: column;align-items: center;}
+
+/* Hover effect for Expert users jumping around */
+.step:hover {background: #f0f7ff;color: var(--accent);}
+.step.active {color: var(--accent);font-weight: 600;background: #f0f7ff;}
+.step-num {width: 28px;height: 28px;line-height: 28px;border-radius: 50%;background: #eee;display: block;margin-bottom: 6px;font-size: 0.85rem;transition: background 0.3s;}
+.step.active .step-num {background: var(--accent);color: #fff;}
+
+/* Wizard Step Visibility */
+.wizard-step {display: none;}
+.wizard-step.active {display: block;animation: slideIn 0.3s ease-out;}
+
+@keyframes slideIn {from { opacity: 0; transform: translateX(10px); }to { opacity: 1; transform: translateX(0); }}
+
+/* Navigation Footer */
+.wizard-actions {display: flex;justify-content: space-between;margin-top: 30px;padding: 20px 0;border-top: 1px solid var(--line);}
+
 
   /* small helpers */
   .muted-inline{ color:var(--muted); font-size:0.9rem; }
@@ -174,44 +161,19 @@
 <main>
   <h1>Enrollment Visa/Master Credit/Debit Cards Service (LF4092)</h1>
 
-  <!-- Wizard top -->
-  <div class="wizard-top">
-    <div class="progress">
-      <div class="steps" id="wizardSteps">
-        <div class="step" data-step="0">
-          <div class="bubble">1</div>
-          <div class="label">Request Type</div>
-        </div>
-        <div class="step" data-step="1">
-          <div class="bubble">2</div>
-          <div class="label">Policy Details</div>
-        </div>
-        <div class="step" data-step="2">
-          <div class="bubble">3</div>
-          <div class="label">Card Details</div>
-        </div>
-        <div class="step" data-step="3">
-          <div class="bubble">4</div>
-          <div class="label">Third Party & PDPA</div>
-        </div>
-        <div class="step" data-step="4">
-          <div class="bubble">5</div>
-          <div class="label">Signature & Submit</div>
-        </div>
-      </div>
-
-      <div class="progress-bar" aria-hidden="true">
-        <div class="fill" id="progressFill"></div>
-      </div>
-    </div>
-    <div class="muted-inline">Step <span id="currentStepLabel">1</span> of 5</div>
+    <!-- Wizard Progress Tracker -->
+  <div class="step-indicator" id="stepIndicator">
+    <div class="step active"><span class="step-num">1</span>Request Type</div>
+    <div class="step"><span class="step-num">2</span>Policy</div>
+    <div class="step"><span class="step-num">3</span>Card Details</div>
+    <div class="step"><span class="step-num">4</span>3rd Party</div>
+    <div class="step"><span class="step-num">5</span>Sign</div>
+    <div class="step"><span class="step-num">6</span>Generate/Reset</div>
   </div>
+  <!-- (END) Progress Tracker -->
 
   <!-- Wizard container -->
-  <div id="wizard">
-
-    <!-- STEP 1: Header (Request Type) -->
-    <div class="wizard-step" data-step="0">
+  <div class="wizard-step active"><!-- STEP 1: Request Type -->
       <section class="section header">
         <h2>Request for :</h2>
 
@@ -247,10 +209,9 @@
           </div>
         </div>
       </section>
-    </div>
+    </div><!-- (END) STEP 1: Request Type -->
 
-    <!-- STEP 2: Section A — Policy Entries -->
-    <div class="wizard-step" data-step="1">
+     <div class="wizard-step"><!-- Step 2: Policy -->
       <section class="section" id="sectionA">
         <h2>Section A — Policy Entries</h2>
         <div id="policiesContainer" class="policy-grid"></div>
@@ -259,10 +220,9 @@
           <small class="muted">Up to 4 policies</small>
         </div>
       </section>
-    </div>
+    </div><!-- (END) STEP 2: Policy -->
 
-    <!-- STEP 3: Section B - Card Details -->
-    <div class="wizard-step" data-step="2">
+ <div class="wizard-step"><!-- Step 3: Card Details-->
       <section class="section">
         <h2>Section B - Card Details</h2>
 
@@ -312,10 +272,9 @@
           <label class="inline"><input name="brand" id="Master_Tick" type="radio"> Master</label>
         </div>
       </section>
-    </div>
+    </div><!-- (END) STEP 2: Card Details -->
 
-    <!-- STEP 4: Section C + D -->
-    <div class="wizard-step" data-step="3">
+   <div class="wizard-step"><!-- Step 4: 3rd Party-->
       <section class="section" id="sectionC">
         <h2>Section C - Third Party / Source</h2>
 
@@ -410,10 +369,9 @@
           <span>I have read and agree to the PDPA terms</span>
         </label>
       </section>
-    </div>
+    </div><!-- (END) STEP 4: 3rd Party -->
 
-    <!-- STEP 5: Section E — Signature -->
-    <div class="wizard-step" data-step="4">
+<div class="wizard-step"><!-- Step 5: Sign-->
       <section class="section">
         <h2>Section E — Signature</h2>
 
@@ -490,25 +448,23 @@
           </div>
         </div>
       </section>
+  </div><!-- (END) STEP 5: Sign -->
 
-      <!-- Final actions on last step -->
+  <div class="wizard-step"><!-- Step 5: Sign-->
       <section class="section actions" style="display:flex;justify-content:flex-end;gap:12px;align-items:center;">
         <button id="generate">Generate PDF</button>
         <button id="resetAll" class="secondary">Reset All</button>
       </section>
+  
+
+  </div><!-- (END) STEP 6: Generate -->
+
+  <!-- NAVIGATION BUTTONS -->
+    <div class="wizard-actions">
+      <button type="button" id="prevBtn" class="ghost" onclick="changeStep(-1)" style="visibility:hidden;">Previous</button>
+      <button type="button" id="nextBtn" onclick="changeStep(1)">Next Step</button>
     </div>
 
-  </div> <!-- end wizard -->
-
-  <!-- Global nav -->
-  <div class="wizard-nav" aria-hidden="false">
-    <div class="left">
-      <button id="prevBtn" class="ghost" type="button">Back</button>
-    </div>
-    <div class="right">
-      <button id="nextBtn" type="button">Next</button>
-    </div>
-  </div>
 
 </main>
 
@@ -1300,68 +1256,71 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* ------------------ WIZARD NAV LOGIC ------------------ */
-(function initWizard(){
-  const steps = Array.from(document.querySelectorAll(".wizard-step"));
-  const stepIndicators = Array.from(document.querySelectorAll(".steps .step"));
-  const fillEl = $("progressFill");
-  const currentStepLabel = $("currentStepLabel");
-  const prevBtn = $("prevBtn");
-  const nextBtn = $("nextBtn");
-  let current = 0;
-  const total = steps.length;
+// WIZARD TRACKER LOGIC
+const steps = document.querySelectorAll(".wizard-step");
+const indicatorSteps = document.querySelectorAll(".step");
+const nextBtn = document.getElementById("nextBtn");
+const prevBtn = document.getElementById("prevBtn");
 
-  function updateUI(){
-    steps.forEach((s, i)=> {
-      if(i === current) { s.classList.add("active"); } else { s.classList.remove("active"); }
-    });
-    stepIndicators.forEach((si, i)=>{
-      if(i <= current) si.classList.add("active"); else si.classList.remove("active");
-    });
-    const pct = (current) / Math.max(1, total-1) * 100;
-    if(fillEl) fillEl.style.width = pct + "%";
-    if(currentStepLabel) currentStepLabel.textContent = (current + 1);
+// 1. Load saved step on startup (fallback to 0 if invalid or empty)
+const savedStep = parseInt(localStorage.getItem("wizardCurrentStep"), 10);
+let currentStep = (!isNaN(savedStep) && savedStep >= 0 && savedStep < steps.length) ? savedStep : 0;
 
-    // Prev/Next button states
-    if(prevBtn) prevBtn.disabled = (current === 0);
-    if(nextBtn) nextBtn.disabled = false;
+// 2. Initialize Click Events for the Progress Tracker
+indicatorSteps.forEach((stepCircle, index) => {
+  stepCircle.addEventListener("click", () => {
+    navigateTo(index);
+  });
+});
 
-    // last step: show Generate + Reset inside the step (they already exist in DOM)
-    // We hide global next button when on last step and show nothing (or disable)
-    if(current === total - 1){
-      if(nextBtn) nextBtn.style.display = "none";
+// 3. Updated Navigation Function
+function navigateTo(index) {
+  // Clear 'active' from ALL steps & indicators to override hardcoded HTML
+  steps.forEach(step => step.classList.remove("active"));
+  indicatorSteps.forEach(ind => ind.classList.remove("active"));
+
+  // Update Index
+  currentStep = index;
+
+  // Persist current step to localStorage
+  localStorage.setItem("wizardCurrentStep", currentStep);
+
+  // Apply active class to current step
+  steps[currentStep].classList.add("active");
+  indicatorSteps[currentStep].classList.add("active");
+
+  // Handle "Previous" button visibility
+  if (prevBtn) prevBtn.style.visibility = (currentStep === 0) ? "hidden" : "visible";
+
+  // Handle "Next" button: Hide it completely on the final step
+  if (nextBtn) {
+    if (currentStep === steps.length - 1) {
+      nextBtn.style.display = "none";
     } else {
-      if(nextBtn) nextBtn.style.display = "inline-block";
-      if(nextBtn) nextBtn.textContent = "Next";
+      nextBtn.style.display = "block";
+      nextBtn.innerText = "Next Step";
     }
-
-    // Scroll into view for better UX
-    const active = steps[current];
-    if(active) active.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  // Navigation functions
-  function goToStep(n){
-    if(n < 0) n = 0;
-    if(n >= total) n = total - 1;
-    current = n;
-    updateUI();
+  // Smooth scroll to top of the card
+  const mainContent = document.querySelector('main');
+  if (mainContent) mainContent.scrollIntoView({ behavior: 'smooth' });
+}
+
+// 4. Updated Next/Back logic
+function changeStep(n) {
+  let newStep = currentStep + n;
+  
+  // Only navigate if the step actually exists
+  if (newStep >= 0 && newStep < steps.length) {
+    navigateTo(newStep);
   }
-  if(prevBtn) prevBtn.addEventListener("click", ()=> goToStep(current - 1));
-  if(nextBtn) nextBtn.addEventListener("click", ()=> {
-    if(current < total - 1) goToStep(current + 1);
-  });
+}
 
-  // click on step indicator to jump (optional)
-  stepIndicators.forEach((si, idx)=> {
-    si.addEventListener("click", ()=> {
-      goToStep(idx);
-    });
-  });
-
-  // Initialize
-  goToStep(0);
-})();
+// 5. Force UI to match saved step as soon as DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  navigateTo(currentStep);
+});
 </script>
 </body>
 </html>
