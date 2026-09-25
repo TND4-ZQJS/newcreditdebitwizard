@@ -920,7 +920,7 @@ function setSignedDateToday() {
   const yearStr = String(now.getFullYear());
 
   // 4. Target elements
-  const daySelect = document.getElementById('Sign_Day');
+  const daySelect = document.getElementById('Sign_Date');
   const monthSelect = document.getElementById('Sign_Month');
   const yearSelect = document.getElementById('Sign_Year');
 
@@ -936,7 +936,7 @@ function setSignedDateToday() {
     yearSelect.dispatchEvent(new Event('change', { bubbles: true }));
 
     // Explicitly write to localStorage if you store form fields by ID directly
-    saveToLocalStorage('Sign_Day', dayStr);
+    saveToLocalStorage('Sign_Date', dayStr);
     saveToLocalStorage('Sign_Month', monthStr);
     saveToLocalStorage('Sign_Year', yearStr);
   }
