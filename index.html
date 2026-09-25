@@ -391,7 +391,31 @@ accordance with the Company’s Notice on Personal Data and Privacy as set out i
       <section class="section">
         <h2>Section E — Signature</h2>
 
-        <label>Policy Owner's Name
+                  <div class="row">
+          <label style="flex:1">Signed at (State)
+            <select id="Sign_State_Select">
+              <option value="">-- Select State --</option>
+            </select>
+          </label>
+        </div>
+
+         <div class="row">
+          <label style="flex:1">Signed Date (DD)
+            <select id="Sign_Date_Select"></select>
+          </label>
+          <label style="flex:1">Signed Month
+            <select id="Sign_Month_Select"></select>
+          </label>
+          <label style="flex:1">Signed Year (YYYY)
+            <select id="Sign_Year_Select"></select>
+          </label>
+        </div>
+       
+      </section>
+
+        <section class="section">
+<h3>Policy Owner Signature</h3>
+         <label>Policy Owner's Name
           <input id="Sign_OwnerName" type="text">
         </label>
         <div class="row" style="margin-top: -10px; margin-bottom: 12px;">
@@ -406,31 +430,10 @@ accordance with the Company’s Notice on Personal Data and Privacy as set out i
             <input id="Sign_OwnerNIRC" type="text">
           </label>
            </div>
-      </section>
 
-        <section class="section">
-          <div class="row">
-          <label style="flex:1">Signed at (State)
-            <select id="Sign_State_Select">
-              <option value="">-- Select State --</option>
-            </select>
-          </label>
-        </div>
-
-         <div class="row">
-          <label>Signed Date (DD)
-            <select id="Sign_Date_Select"></select>
-          </label>
-          <label>Signed Month
-            <select id="Sign_Month_Select"></select>
-          </label>
-          <label>Signed Year (YYYY)
-            <select id="Sign_Year_Select"></select>
-          </label>
-        </div>
 
         <!-- Tap-to-sign previews (Owner + Payor) -->
-        <h3>Policy Owner Signature</h3>
+        
         <div class="sig-preview" id="preview_owner" onclick="openSig('owner')">
           <span>Tap to Sign (Owner)</span>
         </div>
