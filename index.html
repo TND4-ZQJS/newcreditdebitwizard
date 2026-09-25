@@ -28,6 +28,20 @@
   button.ghost:hover { background: rgba(0,0,0,0.02); }
   .actions{display:flex;gap:12px;align-items:center}
 
+  
+   .btn-set-today {
+  margin-left: 8px;
+  padding: 4px 10px !important;
+  font-size: 0.75rem !important;
+  height: auto !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+} 
+
   /*making the checkbox in proper alignment*/
 .checkbox-line {display: flex; align-items: center; gap: 8px; margin-top: 10px;}
 .checkbox-line input[type="checkbox"] {width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer;}
@@ -410,6 +424,9 @@ accordance with the Company’s Notice on Personal Data and Privacy as set out i
             <select id="Sign_Year_Select"></select>
           </label>
         </div>
+            <div class="row">
+  <button type="button" class="btn-set-today ghost" onclick="setSignedDateToday()">Today</button>
+</div>
        
       </section>
 
@@ -889,6 +906,64 @@ if(thirdPPNIRC) thirdPPNIRC.addEventListener("input", () => {
   if (sameAsThirdPartyPayorNIRC && sameAsThirdPartyPayorNIRC.checked) { signPayorNIRC.value = thirdPPNIRC.value; saveElValue(signPayorNIRC); }
 });
 updatePayorSectionUI();
+
+/* ---------- Date Set Today Button ---------- */  
+function setSignedDateToday() {
+  const now = new Date();
+
+  // 1. Format Day (e.g., 5 -> "05")
+  const dayStr = String(now.getDate()).padStart(2, '0');
+
+  // 2. Format Month string matching select options
+  const monthNames = [
+    "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+    "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+  ];
+  const monthStr = monthNames[now.getMonth()];
+
+  // 3. Format Year (e.g., "2026")
+  const yearStr = String(now.getFullYear());
+
+  // 4. Target elements
+  const daySelect = document.getElementById('GCPWD_Signed_Day');
+  const monthSelect = document.getElementById('GCPWD_Signed_Month');
+  const yearSelect = document.getElementById('GCPWD_Signed_Year');
+
+  if (daySelect && monthSelect && yearSelect) {
+    // Set values
+    daySelect.value = dayStr;
+    monthSelect.value = monthStr;
+    yearSelect.value = yearStr;
+
+    // Dispatch change event to trigger local storage auto-save listeners if present
+    daySelect.dispatchEvent(new Event('change', { bubbles: true }));
+    monthSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    yearSelect.dispatchEvent(new Event('change', { bubbles: true }));
+
+    // Explicitly write to localStorage if you store form fields by ID directly
+    saveToLocalStorage('GCPWD_Signed_Day', dayStr);
+    saveToLocalStorage('GCPWD_Signed_Month', monthStr);
+    saveToLocalStorage('GCPWD_Signed_Year', yearStr);
+  }
+}
+
+// Helper function for local storage persistence
+function saveToLocalStorage(id, value) {
+  try {
+    // If you use a single object key for form data, adapt this accordingly
+    localStorage.setItem(id, value);
+    
+    // Optional: trigger your save indicator toast if you have one
+    const saveStatus = document.getElementById('saveStatus');
+    if (saveStatus) {
+      saveStatus.style.opacity = '1';
+      setTimeout(() => { saveStatus.style.opacity = '0'; }, 1500);
+    }
+  } catch (e) {
+    console.error('Failed to save to localStorage:', e);
+  }
+}
+
 
 /* ---------- SIGNATURE MODAL LOGIC ---------- */
 let sigTarget = null;
