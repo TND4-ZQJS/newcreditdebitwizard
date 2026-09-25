@@ -28,6 +28,10 @@
   button.ghost:hover { background: rgba(0,0,0,0.02); }
   .actions{display:flex;gap:12px;align-items:center}
 
+  /*making the checkbox in proper alignment*/
+.checkbox-line {display: flex; align-items: center; gap: 8px; margin-top: 10px;}
+.checkbox-line input[type="checkbox"] {width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer;}
+
   /* Header tidy alignment */
   .header-agree{
     display:flex;align-items:center;gap:10px;
@@ -176,6 +180,16 @@
 
   <!-- Wizard container -->
   <div class="wizard-step active"><!-- STEP 1: Request Type -->
+
+       <section class="section">
+  <h2>Notice on Personal Data and Privacy</h2>  
+  <div class="checkbox-line">
+    <input id="PDPA" type="checkbox"><small class="muted">I have read the Company’s Notice on Personal Data and Privacy and hereby consent to the processing of my personal data in
+accordance with the Company’s Notice on Personal Data and Privacy as set out in the Company’s website
+(https://www.manulife.com.my/en/individual/privacy-policy.html). </small>
+    </div>
+         
+  </section>
       <section class="section header">
         <h2>Request for :</h2>
 
