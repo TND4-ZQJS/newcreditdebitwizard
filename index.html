@@ -1216,12 +1216,12 @@ function applyRelationship(form, n){
 }
 
 /* ---------- Generate PDF ---------- */
-async function fillPDF(){
+async function fillPDF(templateFileName, action = 'download') {
   try {
     $("generate").disabled = true;
 
-    const res = await fetch(PDF_FILENAME);
-    if (!res.ok) throw new Error("Cannot load PDF: " + PDF_FILENAME);
+    const res = await fetch(templateFileName);
+    if (!res.ok) throw new Error("Cannot load PDF: " + templateFileName);
     const bytes = await res.arrayBuffer();
     const pdfDoc = await PDFLib.PDFDocument.load(bytes);
     const form = pdfDoc.getForm();
@@ -1383,12 +1383,25 @@ if (sigPayor) {
     //form.flatten();
     
     
-    // Save & download
+    // 3. Save modified PDF bytes & create Blob URL
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = "Filled_Credit_Card_Form.pdf"; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=> URL.revokeObjectURL(url), 2500);
+
+    // 4. Execute action (View in new tab OR Force Download)
+    if (action === 'view') {
+      window.open(url, '_blank');
+    } else {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Filled_Credit_Card_Form.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    // 5. Clean up Blob URL memory leak
+    setTimeout(() => URL.revokeObjectURL(url), 2500);
 
   } catch(err){
     alert("PDF generation failed: " + (err.message || err));
