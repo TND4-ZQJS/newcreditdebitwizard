@@ -59,8 +59,10 @@
 }
 
 .checkbox-line small {
-  min-width: 0;               /* allows text to wrap instead of overflowing the container */
-  line-height: 1.4;           /* improves readability for wrapped multi-line text */
+  min-width: 0;
+  line-height: 1.4;
+  overflow-wrap: break-word;   /* allows long URLs/words to break instead of overflowing */
+  word-break: break-word;      /* fallback for older/some mobile browsers */
 }
 
   /* Header tidy alignment */
