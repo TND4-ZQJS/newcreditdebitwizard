@@ -407,7 +407,7 @@ accordance with the Company’s Notice on Personal Data and Privacy as set out i
 
                   <div class="row">
           <label style="flex:1">Signed at (State)
-            <select id="Sign_State_Select" class="persist">
+            <select id="Sign_State" class="persist">
               <option value="">-- Select State --</option>
         <option>SELANGOR</option><option>K.LUMPUR</option><option>MELAKA</option><option>JOHOR</option>
         <option>N.SEMBILAN</option><option>PENANG</option><option>PERAK</option><option>SABAH</option>
@@ -419,7 +419,7 @@ accordance with the Company’s Notice on Personal Data and Privacy as set out i
 
          <div class="row">
           <label style="flex:1">Signed Date (DD)
-            <select id="Sign_Date_Select" class="persist">
+            <select id="Sign_Date" class="persist">
         <option value="">-- Day (DD) --</option>
         <option>01</option><option>02</option><option>03</option><option>04</option>
         <option>05</option><option>06</option><option>07</option><option>08</option>
@@ -432,7 +432,7 @@ accordance with the Company’s Notice on Personal Data and Privacy as set out i
           </select></label>
            
           <label style="flex:1">Signed Month
-            <select id="Sign_Month_Select" class="persist">
+            <select id="Sign_Month" class="persist">
                     <option value="">-- Month --</option>
         <option>JANUARY</option><option>FEBRUARY</option><option>MARCH</option><option>APRIL</option>
         <option>MAY</option><option>JUNE</option><option>JULY</option><option>AUGUST</option>
@@ -440,7 +440,7 @@ accordance with the Company’s Notice on Personal Data and Privacy as set out i
           </select></label>
            
           <label style="flex:1">Signed Year (YYYY)
-            <select id="Sign_Year_Select" class="persist">
+            <select id="Sign_Year" class="persist">
                 <option value="">-- Year (YYYY) --</option>
         <option>2026</option><option>2027</option>
           </select></label>
@@ -920,9 +920,9 @@ function setSignedDateToday() {
   const yearStr = String(now.getFullYear());
 
   // 4. Target elements
-  const daySelect = document.getElementById('Sign_Day_Select');
-  const monthSelect = document.getElementById('Sign_Month_Select');
-  const yearSelect = document.getElementById('Sign_Year_Select');
+  const daySelect = document.getElementById('Sign_Day');
+  const monthSelect = document.getElementById('Sign_Month');
+  const yearSelect = document.getElementById('Sign_Year');
 
   if (daySelect && monthSelect && yearSelect) {
     // Set values
@@ -936,9 +936,9 @@ function setSignedDateToday() {
     yearSelect.dispatchEvent(new Event('change', { bubbles: true }));
 
     // Explicitly write to localStorage if you store form fields by ID directly
-    saveToLocalStorage('Sign_Day_Select', dayStr);
-    saveToLocalStorage('Sign_Month_Select', monthStr);
-    saveToLocalStorage('Sign_Year_Select', yearStr);
+    saveToLocalStorage('Sign_Day', dayStr);
+    saveToLocalStorage('Sign_Month', monthStr);
+    saveToLocalStorage('Sign_Year', yearStr);
   }
 }
 
@@ -1164,10 +1164,10 @@ async function fillPDF(){
     // SIGN META
     safeSetText(form, "Sign_OwnerName", ($("Sign_OwnerName").value || "").toUpperCase());
     safeSetText(form, "Sign_OwnerNIRC", $("Sign_OwnerNIRC").value || "");
-    safeSetText(form, "Sign_State", $("Sign_State_Select").value || "");
-    safeSetText(form, "Sign_Date", $("Sign_Date_Select").value || "");
-    safeSetText(form, "Sign_Month", $("Sign_Month_Select").value || "");
-    safeSetText(form, "Sign_Year", $("Sign_Year_Select").value || "");
+    safeSetText(form, "Sign_State", $("Sign_State").value || "");
+    safeSetText(form, "Sign_Date", $("Sign_Date").value || "");
+    safeSetText(form, "Sign_Month", $("Sign_Month").value || "");
+    safeSetText(form, "Sign_Year", $("Sign_Year").value || "");
     safeSetText(form, "Sign_PayorName", ($("Sign_PayorName").value || "").toUpperCase());
     safeSetText(form, "Sign_PayorNIRC", $("Sign_PayorNIRC").value || "");
 
