@@ -42,9 +42,26 @@
   border-radius: 6px;
 } 
 
-  /*making the checkbox in proper alignment*/
-.checkbox-line {display: flex; align-items: center; gap: 8px; margin-top: 10px;}
-.checkbox-line input[type="checkbox"] {width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer;}
+ .checkbox-line {
+  display: flex;
+  align-items: flex-start;   /* was: center — aligns checkbox to top of text, not middle */
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.checkbox-line input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;            /* prevents checkbox from being squeezed on narrow screens */
+  margin-top: 3px;           /* optional: nudges checkbox to visually align with first line of text */
+}
+
+.checkbox-line small {
+  min-width: 0;               /* allows text to wrap instead of overflowing the container */
+  line-height: 1.4;           /* improves readability for wrapped multi-line text */
+}
 
   /* Header tidy alignment */
   .header-agree{
