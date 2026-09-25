@@ -845,33 +845,7 @@ if(sameAsCardOwner) sameAsCardOwner.addEventListener("change", () => {
 if(cardName) cardName.addEventListener("input", () => {
   if (sameAsCardOwner && sameAsCardOwner.checked) { signOwnerName.value = cardName.value.toUpperCase(); saveElValue(signOwnerName); }
 });
-(function populateStates() {
-  const states = ["SELANGOR", "K.LUMPUR", "MELAKA", "N.SEMBILAN", "JOHOR", "PERAK", "KEDAH", "PULAU PINANG", "KELANTAN", "TERENGGANU", "PAHANG", "PERLIS", "SABAH", "SARAWAK"];
-  const select = $("Sign_State_Select");
-  if(!select) return;
-  states.forEach(s => { const o = document.createElement("option"); o.value = s; o.textContent = s; select.appendChild(o); });
-  autoBindSave(select);
-})();
-(function populateSignDate() {
-  const dateSelect = $("Sign_Date_Select");
-  if(!dateSelect) return;
-  dateSelect.innerHTML = '<option value="">-- DD --</option>';
-  for (let d = 1; d <= 31; d++) { const val = String(d).padStart(2, '0'); dateSelect.innerHTML += `<option value="${val}">${val}</option>`; }
-  autoBindSave(dateSelect);
- const monthSelect = $("Sign_Month_Select");
- monthSelect.innerHTML = '<option value="">-- MM --</option>';
- const months = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December"];
- months.forEach(m => {
-  monthSelect.innerHTML += `<option value="${m.toUpperCase()}">${m.toUpperCase()}</option>`;
- });
- autoBindSave(monthSelect);
-  const yearSelect = $("Sign_Year_Select");
-  yearSelect.innerHTML = '<option value="">-- YYYY --</option>';
-  for (let y = 2025; y <= 2030; y++) { yearSelect.innerHTML = yearSelect.innerHTML + `<option value="${y}">${y}</option>`; }
-  autoBindSave(yearSelect);
-})();
+
 
 /* Payor section visibility + linking */
 const payorSection = $("payorSignatureSection");
