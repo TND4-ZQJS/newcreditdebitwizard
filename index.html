@@ -1382,28 +1382,31 @@ if (sigPayor) {
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
 
-    // 4. Execute action (View in new tab OR Force Download)
+    // 4. Construct output filename with policy number fallback
+    let policyNum = "NEW";
+
+    const firstPolicy = created[0]; // first .policy element in the container
+    if (firstPolicy) {
+      const idx = firstPolicy.dataset.index;
+      const policyVal = firstPolicy.querySelector(`#PolicyNo${idx}`)?.value || "";
+      if (policyVal.trim() !== "") {
+        policyNum = policyVal.trim().replace(/[^a-z0-9]/gi, '_');
+      }
+    }
+
+    const finalFileName = `${policyNum}_Credit_Card_Form.pdf`;
+
+    // 5. Execute action (View in new tab OR Force Download)
     if (action === 'view') {
       window.open(url, '_blank');
     } else {
       const a = document.createElement("a");
       a.href = url;
-      a.download = "Filled_Credit_Card_Form.pdf";
+      a.download = finalFileName;
       document.body.appendChild(a);
       a.click();
       a.remove();
     }
-
-    // 5. Clean up Blob URL memory leak
-    setTimeout(() => URL.revokeObjectURL(url), 2500);
-
-  } catch(err){
-    alert("PDF generation failed: " + (err.message || err));
-    console.error(err);
-  } finally {
-    $("generate").disabled = false;
-  }
-}
 
 /* ---------- Reset All ---------- */
 function resetAll(){
