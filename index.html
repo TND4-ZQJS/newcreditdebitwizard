@@ -1377,7 +1377,7 @@ if (sigPayor) {
     //form.flatten();
     
     
-   // 3. Save modified PDF bytes & create Blob URL
+  // 3. Save modified PDF bytes & create Blob URL
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
@@ -1404,7 +1404,6 @@ if (sigPayor) {
     $("generate").disabled = false;
   }
 }
-
 /* ---------- Reset All ---------- */
 function resetAll(){
   const keys = Object.keys(localStorage);
