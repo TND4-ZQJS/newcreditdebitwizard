@@ -925,9 +925,9 @@ function setSignedDateToday() {
   const yearStr = String(now.getFullYear());
 
   // 4. Target elements
-  const daySelect = document.getElementById('GCPWD_Signed_Day');
-  const monthSelect = document.getElementById('GCPWD_Signed_Month');
-  const yearSelect = document.getElementById('GCPWD_Signed_Year');
+  const daySelect = document.getElementById('Sign_Day_Select');
+  const monthSelect = document.getElementById('Sign_Month_Select');
+  const yearSelect = document.getElementById('Sign_Year_Select');
 
   if (daySelect && monthSelect && yearSelect) {
     // Set values
@@ -941,9 +941,9 @@ function setSignedDateToday() {
     yearSelect.dispatchEvent(new Event('change', { bubbles: true }));
 
     // Explicitly write to localStorage if you store form fields by ID directly
-    saveToLocalStorage('GCPWD_Signed_Day', dayStr);
-    saveToLocalStorage('GCPWD_Signed_Month', monthStr);
-    saveToLocalStorage('GCPWD_Signed_Year', yearStr);
+    saveToLocalStorage('Sign_Day_Select', dayStr);
+    saveToLocalStorage('Sign_Month_Select', monthStr);
+    saveToLocalStorage('Sign_Year_Select', yearStr);
   }
 }
 
