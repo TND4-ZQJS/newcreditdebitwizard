@@ -1193,6 +1193,37 @@ window.addEventListener("DOMContentLoaded", ()=>{
   });
 });
 
+async function embedSignatureToPdf(pdfDoc, pageIndex, options) {
+  const { role, x, y, factor = 0.40 } = options;
+
+  const sigDataUri = localStorage.getItem(`cc_sig_${role}`);
+  if (!sigDataUri || !sigDataUri.startsWith("data:image/png")) {
+    console.warn(`No valid PNG signature found for role: ${role}`);
+    return;
+  }
+
+  try {
+    const img = await pdfDoc.embedPng(sigDataUri);
+    const originalSize = img.size();
+
+    const baseWidth = 250;
+    const aspectRatio = originalSize.width / originalSize.height;
+    const renderWidth = baseWidth * factor;
+    const renderHeight = (baseWidth / aspectRatio) * factor;
+
+    const pages = pdfDoc.getPages();
+    const targetPage = pages[pageIndex];
+
+    if (targetPage) {
+      targetPage.drawImage(img, { x, y, width: renderWidth, height: renderHeight });
+    } else {
+      console.error(`Page index ${pageIndex} does not exist in the PDF template.`);
+    }
+  } catch (err) {
+    console.error(`Error embedding signature for role ${role}:`, err);
+  }
+}  
+
 /* ---------- Restore on load ---------- */
 (function restoreAll(){
   document.querySelectorAll("input,select,textarea").forEach(el=> {
@@ -1323,76 +1354,11 @@ async function fillPDF(templateFileName, action = 'download') {
     // PDPA
     safeCheck(form, "PDPA", $("PDPA").checked);
 
-   /* --------- SIGNATURE IMAGE EMBEDDING (embedPng + drawImage) --------- */
-    const pages = pdfDoc.getPages();
-    const pageIndex = Math.min(2, pages.length - 1); // Page 3 (index 2); adjust if needed
-    const page = pages[pageIndex];
+      /* --------- SIGNATURE IMAGE EMBEDDING --------- */
+    const targetPageIndex = 2; // adjust to your actual signature page (0-indexed)
 
-    // Owner signature
-    const sigOwner = localStorage.getItem("cc_sig_owner");
-    if (sigOwner) {
-      try {
-        const imgOwner = await pdfDoc.embedPng(sigOwner);
-        const { width, height } = imgOwner.size();
-
-        const previewEl = document.getElementById("preview_owner");
-        const boxW = previewEl.offsetWidth;
-        const boxH = previewEl.offsetHeight;
-
-        const scale = Math.min(boxW / width, boxH / height);
-        let drawW = width * scale;
-        let drawH = height * scale;
-
-        const factor = 0.40;
-        const posX = 50;
-        const posY = 490;
-
-        drawW *= factor;
-        drawH *= factor;
-
-        page.drawImage(imgOwner, {
-          x: posX,
-          y: posY,
-          width: drawW,
-          height: drawH
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    // Payor signature
-    const sigPayor = localStorage.getItem("cc_sig_payor");
-    if (sigPayor) {
-      try {
-        const imgPayor = await pdfDoc.embedPng(sigPayor);
-        const { width, height } = imgPayor.size();
-
-        const previewEl = document.getElementById("preview_payor");
-        const boxW = previewEl.offsetWidth;
-        const boxH = previewEl.offsetHeight;
-
-        const scale = Math.min(boxW / width, boxH / height);
-        let drawW = width * scale;
-        let drawH = height * scale;
-
-        const factor = 0.40;
-        const posX = 370;
-        const posY = 490;
-
-        drawW *= factor;
-        drawH *= factor;
-
-        page.drawImage(imgPayor, {
-          x: posX,
-          y: posY,
-          width: drawW,
-          height: drawH
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    await embedSignatureToPdf(pdfDoc, targetPageIndex, { role: "owner", x: 50,  y: 490, factor: 0.40 });
+    await embedSignatureToPdf(pdfDoc, targetPageIndex, { role: "payor", x: 370, y: 490, factor: 0.40 });
 
     // Flatten form fields before saving
     //form.flatten();
